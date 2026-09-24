@@ -1,0 +1,1 @@
+Abaikan saya folder `venv`
