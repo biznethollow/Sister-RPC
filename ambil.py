@@ -25,12 +25,12 @@ class Inventory:
     )
 
     def ping(self):
+        hapus.ping()
         if "ping-1" in storage.get_items():
             p = storage.get_item("ping-1") + 1
             storage.set_item("ping-1", p)
         else:
             storage.set_item("ping-1", 1)
-        hapus.ping()
 
 port = 10000
 server = ThreadedXMLRPCServer(("localhost", port), allow_none=True)

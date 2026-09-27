@@ -20,12 +20,12 @@ class Inventory:
             )
 
     def ping(self):
+        storage.ping()
         if "ping-2" in storage.get_items():
             p = storage.get_item("ping-2") + 1
             storage.set_item("ping-2", p)
         else:
             storage.set_item("ping-2", 1)
-        storage.ping()
 
 port = 11000
 server = ThreadedXMLRPCServer(("localhost", port), allow_none=True)

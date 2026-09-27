@@ -29,12 +29,12 @@ class Inventory:
         return False
 
     def ping(self):
+        tambah.ping()
         if "ping-3" in storage.get_items():
             p = storage.get_item("ping-3") + 1
             storage.set_item("ping-3", p)
         else:
             storage.set_item("ping-3", 1)
-        tambah.ping()
 
 port = 9000
 server = ThreadedXMLRPCServer(("localhost", port), allow_none=True)
