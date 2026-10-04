@@ -1,9 +1,11 @@
+import Pyro4
 import xmlrpc.client
+import requests
 
-tambah = xmlrpc.client.ServerProxy("http://127.0.0.1:8000/", allow_none=True)
-tampil = xmlrpc.client.ServerProxy("http://127.0.0.1:12000/", allow_none=True)
-hapus = xmlrpc.client.ServerProxy("http://127.0.0.1:11000/", allow_none=True)
-ambil = xmlrpc.client.ServerProxy("http://127.0.0.1:10000/", allow_none=True)
+URL_HAPUS = "http://localhost:11000"
+tambah = xmlrpc.client.ServerProxy("http://localhost:8000/", allow_none=True)
+tampil = Pyro4.core.Proxy('PYRO:Tampil@localhost:12000')
+ambil = xmlrpc.client.ServerProxy("http://localhost:10000/", allow_none=True)
 
 def valid_angka(num):
     while True:
@@ -19,11 +21,9 @@ while True:
     print("3. Ambil")
     print("4. Ping")
     print("5. Keluar")
-    # print("==================================")
     print("======= Inventory saat ini =======")
     for i, j in tampil.tampil_item().items():
         print(f"{i:<5} : {j}")
-    # print(tampil.tampil_item())       
     print("==================================")
     inv = valid_angka("Masukkan pilihan anda: ")
     if (inv == 1):
@@ -35,7 +35,7 @@ while True:
     elif(inv == 2):
         print("== Hapus barang ==")
         hps = str(input("Masukkan nama barang: "))
-        hapus.hapus_item(hps)
+        requests.delete(f"{URL_HAPUS}/item/{hps}")
 
     elif(inv == 3):
         print("== Ambil barang ==")

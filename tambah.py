@@ -1,9 +1,10 @@
 from socketserver import ThreadingMixIn
 from xmlrpc.server import SimpleXMLRPCServer
 import xmlrpc.client
+import Pyro4
 
 storage = xmlrpc.client.ServerProxy("http://localhost:9000")
-tampil = xmlrpc.client.ServerProxy("http://localhost:12000")
+tampil = Pyro4.core.Proxy('PYRO:Tampil@localhost:12000')
 
 class ThreadedXMLRPCServer(ThreadingMixIn, SimpleXMLRPCServer):
     pass
@@ -31,7 +32,7 @@ class Inventory:
             storage.set_item("ping-4", 1)
 
 port = 8000
-server = ThreadedXMLRPCServer(("localhost", port), allow_none=True)
+server = ThreadedXMLRPCServer(("0.0.0.0", port), allow_none=True)
 inventory = Inventory()
 server.register_instance(inventory)
 print(f"Server berjalan di port {port}...")

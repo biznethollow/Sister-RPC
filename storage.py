@@ -2,7 +2,6 @@ from socketserver import ThreadingMixIn
 from xmlrpc.server import SimpleXMLRPCServer
 import xmlrpc.client
 
-# storage = xmlrpc.client.ServerProxy("http://localhost:9000")
 tambah = xmlrpc.client.ServerProxy("http://localhost:8000")
 
 class ThreadedXMLRPCServer(ThreadingMixIn, SimpleXMLRPCServer):
@@ -37,7 +36,7 @@ class Inventory:
             self.set_item("ping-3", 1)
 
 port = 9000
-server = ThreadedXMLRPCServer(("localhost", port), allow_none=True)
+server = ThreadedXMLRPCServer(("0.0.0.0", port), allow_none=True)
 inventory = Inventory()
 server.register_instance(inventory)
 print(f"Server berjalan di port {port}...")

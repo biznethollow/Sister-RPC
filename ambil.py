@@ -1,9 +1,10 @@
 from socketserver import ThreadingMixIn
 from xmlrpc.server import SimpleXMLRPCServer
 import xmlrpc.client
+import requests
 
 storage = xmlrpc.client.ServerProxy("http://localhost:9000")
-hapus = xmlrpc.client.ServerProxy("http://localhost:11000")
+URL_HAPUS = "http://localhost:11000"
 
 class ThreadedXMLRPCServer(ThreadingMixIn, SimpleXMLRPCServer):
     pass
@@ -22,10 +23,10 @@ class Inventory:
         storage.set_item(name, stok_baru)
         return "Item {} berhasil diambil. Stok saat ini : {}".format(
             name, stok_baru
-    )
+        )
 
     def ping(self):
-        hapus.ping()
+        requests.get(f"{URL_HAPUS}/ping")
         if "ping-1" in storage.get_items():
             p = storage.get_item("ping-1") + 1
             storage.set_item("ping-1", p)
@@ -33,7 +34,7 @@ class Inventory:
             storage.set_item("ping-1", 1)
 
 port = 10000
-server = ThreadedXMLRPCServer(("localhost", port), allow_none=True)
+server = ThreadedXMLRPCServer(("0.0.0.0", port), allow_none=True)
 inventory = Inventory()
 server.register_instance(inventory)
 print(f"Server berjalan di port {port}...")
